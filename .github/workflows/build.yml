@@ -12,8 +12,8 @@ jobs:
           mem: 2048
           box: archlinux/archlinux
           run: |
-            pacman -Syu
-            pacman -Sy base-devel
+            echo y | pacman -Syu
+            echo y | pacman -Sy base-devel
             mkdir builds
             cd builds
             git clone https://aur.archlinux.org/spotify.git
