@@ -19,6 +19,7 @@ jobs:
             git clone https://aur.archlinux.org/spotify.git
             cd spotify
             echo y | makepkg -si
+            cd ..
             mkdir x86_64
             cp spotify/. x86_64/.
             repo-add x86_64/joaquinito01-aur.db.tar.gz x86_64/*.tar.xz
