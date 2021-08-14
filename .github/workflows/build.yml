@@ -18,15 +18,11 @@ jobs:
             cd builds
             git clone https://aur.archlinux.org/spotify.git
             cd spotify
-            makepkg -si
+            echo y | makepkg -si
             mkdir x86_64
             cp spotify/. x86_64/.
             repo-add x86_64/joaquinito01-aur.db.tar.gz x86_64/*.tar.xz
-  build:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
+      - uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: './builds'
           production-branch: master
@@ -39,3 +35,4 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 1
+
