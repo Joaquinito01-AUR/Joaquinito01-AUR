@@ -13,7 +13,7 @@ jobs:
           box: archlinux/archlinux
           run: |
             echo y | pacman -Syu
-            echo y | pacman -Sy base-devel
+            echo all | echo y | pacman -Sy base-devel
             mkdir builds
             cd builds
             git clone https://aur.archlinux.org/spotify.git
