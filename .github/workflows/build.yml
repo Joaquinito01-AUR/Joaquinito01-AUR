@@ -1,0 +1,41 @@
+name: Build
+on:
+  push
+jobs:
+  build-pkgs:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: leleliu008/github-actions-vagrant@v1
+        with:
+          mem: 2048
+          box: archlinux/archlinux
+          run: |
+            pacman -Syu
+            pacman -Sy base-devel
+            mkdir builds
+            cd builds
+            git clone https://aur.archlinux.org/spotify.git
+            cd spotify
+            makepkg -si
+            mkdir x86_64
+            cp spotify/. x86_64/.
+            repo-add x86_64/joaquinito01-aur.db.tar.gz x86_64/*.tar.xz
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './builds'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
